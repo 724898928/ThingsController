@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.lixin.Util.LogUtil;
+import com.lixin.entity.entityInterfaceImp.EntityObjectImp;
 import com.lixin.gameInterface.Input;
 import com.lixin.gameInterface.Object;
 import com.lixin.gameInterface.TouchHandler;
@@ -14,7 +15,7 @@ import com.lixin.gameInterfaceImp.TouchEvent;
  * Created by li on 2018/9/5.
  */
 
-public class Rocker implements Object {
+public class Rocker extends EntityObjectImp implements Object{
     private String className = "com.li Rocker ";
     //一般坐标的弧度
     private double degressByNormalSystem = Double.NaN;
@@ -65,7 +66,14 @@ public class Rocker implements Object {
                 - rokerCenterYMarginRight4ScreenWidthPercent * screenHeight));
 
     }
-
+    private boolean OnClick(TouchEvent touchEvent){
+        if (Math.sqrt(Math.pow((bigCircle.getCenterX() - touchEvent.x), 2)
+                + Math.pow((bigCircle.getCenterY() - touchEvent.y), 2)) <= bigCircle.getCenterR()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     /**
      * 根据触摸事件控制摇杆
      *
@@ -73,7 +81,7 @@ public class Rocker implements Object {
      */
     public void onTouchEvent(TouchEvent touchEvent) {
 
-        if (isContain(touchEvent)) {
+        if (OnClick(touchEvent)) {
             pointer = touchEvent.pointer;
         }
         LogUtil.d(className, "observerUpData touchEvent.pointer = " + pointer);
@@ -111,17 +119,6 @@ public class Rocker implements Object {
             update(touchX, touchY);
         } else {
             WORKING = false;
-        }
-    }
-
-    public boolean isContain(TouchEvent touchEvent) {
-        if (Math.sqrt(Math.pow((bigCircle.getCenterX() - touchEvent.x), 2)
-                + Math.pow((bigCircle.getCenterY() - touchEvent.y), 2)) <= bigCircle.getCenterR()) {
-            LogUtil.d(className, "isContain true");
-            return true;
-        } else {
-            LogUtil.d(className, "isContain false");
-            return false;
         }
     }
 

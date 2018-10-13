@@ -30,17 +30,13 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
     private int SCREEN_W;
     private int SCREEN_H;
     private Thread mThread;
-    AndroidGame game;
-    Bitmap framebuffer;
-    Thread renderThread = null;
-    SurfaceHolder holder;
+    private Thread renderThread = null;
+    private  SurfaceHolder holder;
     boolean running = false;
-    Rocker rocker;
-    Canvas canvas;
-    Display display;
+    private  Rocker rocker;
+    private  Canvas canvas;
+    private Display display;
 
-    private static final int MAX_TOUCHPOINTS = 10;
-    private Paint touchPaints[] = new Paint[MAX_TOUCHPOINTS];
     private MultiTouchHandler multiTouchHandler;
     private List<TouchEvent> touchEvents;
     private String className = "com.li MySurfaceView";
@@ -51,13 +47,10 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
         //this.game = game;
         //this.framebuffer = bitmap;
         this.holder = getHolder();
-        //为surfaceView添加状态监听
-        //multiTouchHandler = new MultiTouchHandler(this, 1, 1);
         WindowManager windowManager = context.getWindowManager();
         display = windowManager.getDefaultDisplay();
         surfaceCreated(holder);
         setFocusable(true);
-        //  int id = (event.getAction()&MotionEvent.ACTION_POINTER_ID_MASK) >>> MotionEvent.ACTION_POINTER_ID_SHIFT;
         TouchHandler touchHandler = new MultiTouchHandler(this, this, 1, 1);
         touchEvents = touchHandler.getTouchEvents();
         LogUtil.d(className, "MySurfaceView end");
@@ -73,7 +66,6 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
                 if (canvas != null) {
                     canvas.drawColor(Color.WHITE);
                     rocker.drawSelf(canvas);
-
                 }
                 //将矩形延伸到整个SuffaceView
             } catch (Exception e) {

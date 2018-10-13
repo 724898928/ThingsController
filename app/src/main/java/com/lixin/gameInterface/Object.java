@@ -8,7 +8,9 @@ import android.graphics.Canvas;
  */
 
 public interface Object {
-
+    int x=0;
+    int y=0;
+    int R=0;
     void drawSelf(Canvas canvas);
 
 }
