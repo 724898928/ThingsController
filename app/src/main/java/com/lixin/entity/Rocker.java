@@ -66,7 +66,9 @@ public class Rocker extends EntityObjectImp implements Object{
                 - rokerCenterYMarginRight4ScreenWidthPercent * screenHeight));
 
     }
-    private boolean OnClick(TouchEvent touchEvent){
+
+    @Override
+    public boolean OnClick(TouchEvent touchEvent){
         if (Math.sqrt(Math.pow((bigCircle.getCenterX() - touchEvent.x), 2)
                 + Math.pow((bigCircle.getCenterY() - touchEvent.y), 2)) <= bigCircle.getCenterR()) {
             return true;
@@ -94,6 +96,10 @@ public class Rocker extends EntityObjectImp implements Object{
                 } else if (touchEvent.type == TouchEvent.TOUCH_MOVE) {
                     update(touchEvent.x, touchEvent.y);
                 }
+            }
+        }else {
+            if (btnCircle1.OnClick(touchEvent)){
+
             }
         }
     }
@@ -209,5 +215,17 @@ public class Rocker extends EntityObjectImp implements Object{
 
     public boolean isWORKING() {
         return WORKING;
+    }
+
+    public Circle getBigCircle() {
+        return bigCircle;
+    }
+
+    public Circle getSmallCircle() {
+        return smallCircle;
+    }
+
+    public Circle getBtnCircle1() {
+        return btnCircle1;
     }
 }

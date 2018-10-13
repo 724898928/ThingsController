@@ -8,5 +8,5 @@ import com.lixin.gameInterfaceImp.TouchEvent;
  */
 
 public interface EntityObject {
-    boolean OnClick(Object object, TouchEvent touchEvent);
+    boolean OnClick(TouchEvent touchEvent);
 }

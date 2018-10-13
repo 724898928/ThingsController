@@ -40,4 +40,14 @@ public class Circle  extends EntityObjectImp{
     public void setCenterR(float centerR) {
         this.centerR = centerR;
     }
+
+    @Override
+    public boolean OnClick(TouchEvent touchEvent) {
+        if (Math.sqrt(Math.pow((centerX - touchEvent.x), 2)
+                + Math.pow((centerY - touchEvent.y), 2)) <= centerR) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
