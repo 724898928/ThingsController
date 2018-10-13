@@ -32,8 +32,6 @@ public class Rocker implements Object {
     //摇杆半径相对于屏幕的百分比
     private static final float rokerR4ScreenWidthPercent = 0.1f;
     //定义摇杆的两个圆心坐标和半径 百分比计算
-    private float smallCenterX = 120, smallCenterY = 120, smallCenterR = 20;
-    private float bigCenterX = 120, bigCenterY = 120, bigCenterR = 40;
 
     private Circle bigCircle = new Circle();
     private Circle smallCircle = new Circle();
@@ -50,22 +48,20 @@ public class Rocker implements Object {
         paint = new Paint();
         //设置画笔的透明度
         paint.setAlpha(0x77);
-        bigCenterR = screenWidth * rokerR4ScreenWidthPercent;
-        bigCircle.setCenterR(bigCenterR);
-        bigCenterX = smallCenterX = screenWidth - bigCenterR * 1.5f
-                - rokerCenterXMarginRight4ScreenWidthPercent * screenWidth;
-        bigCircle.setCenterX(bigCenterX);
-        bigCenterY = smallCenterY = screenHeight - bigCenterR * 1.5f
-                - rokerCenterYMarginRight4ScreenWidthPercent * screenHeight;
-        bigCircle.setCenterY(bigCenterY);
+        bigCircle.setCenterR(screenWidth * rokerR4ScreenWidthPercent);
+        bigCircle.setCenterX(screenWidth - bigCircle.getCenterR() * 1.5f
+                - rokerCenterXMarginRight4ScreenWidthPercent * screenWidth);
+        bigCircle.setCenterY(screenHeight - bigCircle.getCenterR() * 1.5f
+                - rokerCenterYMarginRight4ScreenWidthPercent * screenHeight);
 
-        smallCenterR = bigCenterR / 2;
-        smallCircle.setCenterR(smallCenterR);
+        smallCircle.setCenterR(bigCircle.getCenterR() / 2);
+        smallCircle.setCenterX(bigCircle.getCenterX());
+        smallCircle.setCenterY(bigCircle.getCenterY());
 
-        btnCircle1.setCenterR(smallCenterR);
-        btnCircle1.setCenterX((screenWidth - bigCenterR * 1.5f
+        btnCircle1.setCenterR(smallCircle.getCenterR());
+        btnCircle1.setCenterX((screenWidth - bigCircle.getCenterR() * 1.5f
                 - rokerCenterXMarginRight4ScreenWidthPercent * screenWidth));
-        btnCircle1.setCenterX(screenHeight - (screenHeight - bigCenterR * 1.5f
+        btnCircle1.setCenterY(screenHeight - (screenHeight - bigCircle.getCenterR() * 1.5f
                 - rokerCenterYMarginRight4ScreenWidthPercent * screenHeight));
 
     }
@@ -120,7 +116,7 @@ public class Rocker implements Object {
 
     public boolean isContain(TouchEvent touchEvent) {
         if (Math.sqrt(Math.pow((bigCircle.getCenterX() - touchEvent.x), 2)
-                + Math.pow((bigCircle.getCenterY() - touchEvent.y), 2)) <= bigCenterR) {
+                + Math.pow((bigCircle.getCenterY() - touchEvent.y), 2)) <= bigCircle.getCenterR()) {
             LogUtil.d(className, "isContain true");
             return true;
         } else {
@@ -136,10 +132,10 @@ public class Rocker implements Object {
                 smallCircle.setCenterX(touchX);
                 smallCircle.setCenterY(touchY);
             } else {
-                setSmallCircleXY(bigCircle.getCenterX(), bigCircle.getCenterY(), bigCenterR, currentRad);
+                setSmallCircleXY(bigCircle.getCenterX(), bigCircle.getCenterY(), bigCircle.getCenterR(), currentRad);
             }
         }
-        degressByNormalSystem = getDegrees(bigCircle.getCenterX(), bigCircle.getCenterY(), smallCenterX, smallCenterY);
+        degressByNormalSystem = getDegrees(bigCircle.getCenterX(), bigCircle.getCenterY(), smallCircle.getCenterX(), smallCircle.getCenterY());
 
     }
 
@@ -181,8 +177,8 @@ public class Rocker implements Object {
     }
 
     public void reset() {
-        smallCenterX = bigCircle.getCenterX();
-        smallCenterY = bigCircle.getCenterY();
+        smallCircle.setCenterX(bigCircle.getCenterX());
+        smallCircle.setCenterY(bigCircle.getCenterY());
         WORKING = false;
     }
 
