@@ -15,7 +15,7 @@ import com.lixin.gameInterfaceImp.TouchEvent;
  * Created by li on 2018/9/5.
  */
 
-public class Rocker extends EntityObjectImp implements Object{
+public class Rocker extends EntityObjectImp implements Object {
     private String className = "com.li Rocker ";
     //一般坐标的弧度
     private double degressByNormalSystem = Double.NaN;
@@ -37,11 +37,16 @@ public class Rocker extends EntityObjectImp implements Object{
     private Circle bigCircle = new Circle();
     private Circle smallCircle = new Circle();
     private Circle btnCircle1 = new Circle();
+    private Circle btnCircle2 = new Circle();
+    private Circle btnCircle3 = new Circle();
+    private Circle btnCircle4 = new Circle();
     private Paint paint;
     private boolean WORKING;
     private int pointer = -1;
     private TouchEvent touchEvent;
-
+    private float btnX, btnY, btnR;
+    private int scale = 0;
+    private  float largeR;
     public Rocker(int screenWidth, int screenHeight, TouchEvent touchEvent) {
         this.screenHeight = screenHeight;
         this.screenWidth = screenWidth;
@@ -59,16 +64,47 @@ public class Rocker extends EntityObjectImp implements Object{
         smallCircle.setCenterX(bigCircle.getCenterX());
         smallCircle.setCenterY(bigCircle.getCenterY());
 
-        btnCircle1.setCenterR(smallCircle.getCenterR());
-        btnCircle1.setCenterX((screenWidth - bigCircle.getCenterR() * 1.5f
-                - rokerCenterXMarginRight4ScreenWidthPercent * screenWidth));
-        btnCircle1.setCenterY(screenHeight - (screenHeight - bigCircle.getCenterR() * 1.5f
-                - rokerCenterYMarginRight4ScreenWidthPercent * screenHeight));
+   /*     btnR = smallCircle.getCenterR()+5;
+        btnX = (screenWidth - bigCircle.getCenterR() * 1.5f
+                - 0.05f*rokerCenterXMarginRight4ScreenWidthPercent * screenWidth);
+        btnY = screenHeight - (screenHeight - bigCircle.getCenterR() * 1.5f
+                - rokerCenterYMarginRight4ScreenWidthPercent * screenHeight - 0.15f*screenHeight);*/
+        btnR = smallCircle.getCenterR() + 20;
+
+        double degrees = 22.5;
+        largeR = (float) (screenWidth/3*1.5);
+
+        btnCircle1.setCenterR(btnR);
+        btnCircle1.setCenterX(getBtnsX(1,degrees));
+        btnCircle1.setCenterY(getBtnsY(1,degrees));
+
+        btnCircle2.setCenterR(btnR);
+        btnCircle2.setCenterX(getBtnsX(2,degrees));
+        btnCircle2.setCenterY(getBtnsY(2,degrees));
+
+        btnCircle3.setCenterR(btnR);
+        btnCircle3.setCenterX(getBtnsX(3,degrees));
+        btnCircle3.setCenterY(getBtnsY(3,degrees));
 
     }
 
+    private double getBtnRad(int scale,double degrees){
+        return  Math.toRadians(scale*degrees);
+    }
+    private float getBtnsX(int scale,double degrees){
+        return (float) (screenWidth-largeR * Math.sin(getBtnRad(scale,degrees)));
+    }
+    private float getBtnsY(int scale,double degrees){
+        return (float)(largeR * Math.cos(getBtnRad(scale,degrees)));
+    }
+    /**
+     * 判断是否被按下
+     *
+     * @param touchEvent
+     * @return
+     */
     @Override
-    public boolean OnClick(TouchEvent touchEvent){
+    public boolean OnClick(TouchEvent touchEvent) {
         if (Math.sqrt(Math.pow((bigCircle.getCenterX() - touchEvent.x), 2)
                 + Math.pow((bigCircle.getCenterY() - touchEvent.y), 2)) <= bigCircle.getCenterR()) {
             return true;
@@ -76,6 +112,7 @@ public class Rocker extends EntityObjectImp implements Object{
             return false;
         }
     }
+
     /**
      * 根据触摸事件控制摇杆
      *
@@ -97,8 +134,8 @@ public class Rocker extends EntityObjectImp implements Object{
                     update(touchEvent.x, touchEvent.y);
                 }
             }
-        }else {
-            if (btnCircle1.OnClick(touchEvent)){
+        } else {
+            if (btnCircle1.OnClick(touchEvent)) {
 
             }
         }
@@ -112,7 +149,8 @@ public class Rocker extends EntityObjectImp implements Object{
         canvas.drawCircle(bigCircle.getCenterX(), bigCircle.getCenterY(), bigCircle.getCenterR(), paint);
         canvas.drawCircle(smallCircle.getCenterX(), smallCircle.getCenterY(), smallCircle.getCenterR(), paint);
         canvas.drawCircle(btnCircle1.getCenterX(), btnCircle1.getCenterY(), btnCircle1.getCenterR(), paint);
-        // canvas.drawCircle(btn2CenterX, btn2CenterY, btn2CenterR, paint);
+        canvas.drawCircle(btnCircle2.getCenterX(), btnCircle2.getCenterY(), btnCircle2.getCenterR(), paint);
+        canvas.drawCircle(btnCircle3.getCenterX(), btnCircle3.getCenterY(), btnCircle3.getCenterR(), paint);
         paint.setColor(Color.BLACK);
         canvas.drawText("原点在坐标系的弧度:" + currentRad, 20, 20, paint);
         canvas.drawText("由该弧度计算得出的角度:" + (currentRad * 180) / Math.PI, 20, 40, paint);
