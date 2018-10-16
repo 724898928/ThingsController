@@ -18,7 +18,7 @@ import com.lixin.gameInterface.TouchHandler;
 import com.lixin.gameInterfaceImp.AndroidGame;
 import com.lixin.gameInterfaceImp.MultiTouchHandler;
 import com.lixin.gameInterfaceImp.TouchEvent;
-
+import com.lixin.connectUtil.NettyClient;
 import java.util.List;
 
 /**
@@ -40,12 +40,13 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
     private MultiTouchHandler multiTouchHandler;
     private List<TouchEvent> touchEvents;
     private String className = "com.li MySurfaceView";
-
+    private NettyClient nettyClient;
     public MySurfaceView(Activity context) {
         super(context);
         LogUtil.d(className, "MySurfaceView begin");
         //this.game = game;
-        //this.framebuffer = bitmap;
+        //this.framebuffer =
+        nettyClient = NettyClient.getInstance();
         this.holder = getHolder();
         WindowManager windowManager = context.getWindowManager();
         display = windowManager.getDefaultDisplay();
@@ -117,7 +118,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
         SCREEN_W = display.getWidth();
         SCREEN_H = display.getHeight();
         running = true;
-        rocker = new Rocker(SCREEN_W, SCREEN_H, null);
+        rocker = new Rocker(SCREEN_W, SCREEN_H, nettyClient);
         mThread = new Thread(this);
         mThread.start();
     }
@@ -135,7 +136,10 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
     @Override
     public void observerUpData(TouchEvent touchEvent) {
         LogUtil.d(className, "observerUpData begin");
+
         rocker.onTouchEvent(touchEvent);
+
+
         LogUtil.d(className, "observerUpData end");
 
     }

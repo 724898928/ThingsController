@@ -35,6 +35,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    compile 'io.netty:netty-all:4.1.13.Final'
-
+    compile 'io.netty:netty-all:4.1.30.Final'
+    androidTestCompile('com.android.support:support-annotations:26.1.0') {
+        force = true
+    }
 }
