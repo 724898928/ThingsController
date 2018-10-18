@@ -8,6 +8,7 @@ import com.lixin.Util.LogUtil;
 import com.lixin.connectUtil.NettyClient;
 import com.lixin.entity.entityInterface.EntityObject;
 import com.lixin.entity.entityInterfaceImp.EntityObjectImp;
+import com.lixin.gameInterface.CmdInterface;
 import com.lixin.gameInterface.Input;
 import com.lixin.gameInterface.Object;
 import com.lixin.gameInterface.TouchHandler;
@@ -41,12 +42,10 @@ public class Rocker extends EntityObjectImp implements EntityObject {
     private Circle btnCircle2;
     private Circle btnCircle3;
     private Paint paint;
-    private boolean WORKING;
-    private int pointer = -1;
-    private TouchEvent touchEvent;
     //按钮半径
     private float btnR;
     private int scale = 1;
+    private int isLift = 1;
     //按钮布局大圆半径
     private float largeR;
     private float largeR2;
@@ -54,6 +53,7 @@ public class Rocker extends EntityObjectImp implements EntityObject {
     private NettyClient nettyClient;
     private double degreesLeft = 45;
     private double degreesRight = 22.5;
+
     public Rocker(int screenWidth, int screenHeight, NettyClient nettyClient) {
         this.screenHeight = screenHeight;
         this.screenWidth = screenWidth;
@@ -65,31 +65,31 @@ public class Rocker extends EntityObjectImp implements EntityObject {
 
         bigCircleR = screenWidth * rokerR4ScreenWidthPercent + 10;
         largeR = (float) (screenWidth / 3 * 1.5);
-        largeR2 = (float) (screenWidth / 3 * 1.5)/2+10;
+        largeR2 = (float) (screenWidth / 3 * 1.5) / 2 + 10;
 
         btnCircle1 = new Circle(paint);
         btnCircle2 = new Circle(paint);
         btnCircle3 = new Circle(paint);
 
         bigSmallCircleRight = new BigSmallCircle(screenWidth, screenHeight, paint, degreesRight, bigCircleR,
-                BigSmallCircle.getRightBtnsX(screenWidth,largeR2,scale,degreesLeft),
-                BigSmallCircle.getRightBtnsY(scale,largeR2,degreesLeft));
+                BigSmallCircle.getRightBtnsX(screenWidth, largeR2, scale, degreesLeft),
+                BigSmallCircle.getRightBtnsY(scale, largeR2, degreesLeft));
         bigSmallCircleLeft = new BigSmallCircle(screenWidth, screenHeight, paint, degreesLeft, bigCircleR,
-                BigSmallCircle.getLeftBtnsX(screenWidth,largeR2,scale,degreesLeft),
-                BigSmallCircle.getLeftBtnsY(screenHeight,scale,largeR2,degreesLeft));
+                BigSmallCircle.getLeftBtnsX(screenWidth, largeR2, scale, degreesLeft),
+                BigSmallCircle.getLeftBtnsY(screenHeight, scale, largeR2, degreesLeft));
 
-        btnR = bigCircleR/2+20;
+        btnR = bigCircleR / 2 + 20;
         btnCircle1.setCenterR(btnR);
-        btnCircle1.setCenterX(BigSmallCircle.getRightBtnsX(screenWidth,largeR,1, degreesRight));
-        btnCircle1.setCenterY(BigSmallCircle.getRightBtnsY(1,largeR, degreesRight));
+        btnCircle1.setCenterX(BigSmallCircle.getRightBtnsX(screenWidth, largeR, 1, degreesRight));
+        btnCircle1.setCenterY(BigSmallCircle.getRightBtnsY(1, largeR, degreesRight));
 
         btnCircle2.setCenterR(btnR);
-        btnCircle2.setCenterX(BigSmallCircle.getRightBtnsX(screenWidth,largeR,2, degreesRight));
-        btnCircle2.setCenterY(BigSmallCircle.getRightBtnsY(2,largeR, degreesRight));
+        btnCircle2.setCenterX(BigSmallCircle.getRightBtnsX(screenWidth, largeR, 2, degreesRight));
+        btnCircle2.setCenterY(BigSmallCircle.getRightBtnsY(2, largeR, degreesRight));
 
         btnCircle3.setCenterR(btnR);
-        btnCircle3.setCenterX(BigSmallCircle.getRightBtnsX(screenWidth,largeR,3, degreesRight));
-        btnCircle3.setCenterY(BigSmallCircle.getRightBtnsY(3,largeR, degreesRight));
+        btnCircle3.setCenterX(BigSmallCircle.getRightBtnsX(screenWidth, largeR, 3, degreesRight));
+        btnCircle3.setCenterY(BigSmallCircle.getRightBtnsY(3, largeR, degreesRight));
 
     }
 
@@ -106,33 +106,35 @@ public class Rocker extends EntityObjectImp implements EntityObject {
         btnCircle3.drawSelf(canvas);
         paint.setColor(Color.BLACK);
     }
+
     /**
      * 根据触摸事件控制摇杆
      *
      * @param touchEvent
      */
     @Override
-    public boolean OnClick(TouchEvent touchEvent) {
-        bigSmallCircleLeft.OnClick(touchEvent);
-        bigSmallCircleRight.OnClick(touchEvent);
+    public boolean OnClick(TouchEvent touchEvent, NettyClient nettyClient,  String cmd) {
+        nettyClient = this.nettyClient;
+        bigSmallCircleLeft.OnClick(touchEvent, nettyClient,CmdInterface.GAME_TURN_LEFT);
+        bigSmallCircleRight.OnClick(touchEvent, nettyClient, CmdInterface.GAME_TURN_RIGHT);
         //判断加速按钮是否按下
-        if (btnCircle1.OnClick(touchEvent)) {
+        if (btnCircle1.OnClick(touchEvent, nettyClient,null)) {
 
             if (touchEvent.type == TouchEvent.TOUCH_DOWN) {
-                nettyClient.insertCmd("1");
+                nettyClient.insertCmd(CmdInterface.GAMESTART);
                 LogUtil.d(className, "observerUpData 正在加速! ");
             }
         }
         //判断减速按钮是否按下
-        if (btnCircle2.OnClick(touchEvent)) {
-            nettyClient.insertCmd("2");
+        if (btnCircle2.OnClick(touchEvent, nettyClient,null)) {
+            nettyClient.insertCmd(CmdInterface.GAME_SPEED_UP);
             if (touchEvent.type == TouchEvent.TOUCH_DOWN) {
                 LogUtil.d(className, "observerUpData 正在减速! ");
             }
         }
         //判断停止按钮是否按下
-        if (btnCircle3.OnClick(touchEvent)) {
-            nettyClient.insertCmd("3");
+        if (btnCircle3.OnClick(touchEvent, nettyClient,null)) {
+            nettyClient.insertCmd(CmdInterface.GAME_SPEED_DOWN);
             if (touchEvent.type == TouchEvent.TOUCH_DOWN) {
                 LogUtil.d(className, "observerUpData 正在停止! ");
             }

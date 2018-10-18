@@ -54,10 +54,10 @@ public class NettyClient{
 
     private void init() {
         LogUtil.d(className, "init begin");
-        port=8266;
-        inetHost = "192.168.4.1";
-       // port=8000;
-       // inetHost = "192.168.4.2";
+        //port=8266;
+        //inetHost = "192.168.4.1";
+        port=8000;
+        inetHost = "192.168.4.2";
         setConnectState(DISCONNECTION);
         bootstrap = new Bootstrap();
         group = new NioEventLoopGroup();

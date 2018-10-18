@@ -6,7 +6,9 @@ import android.graphics.Paint;
 import android.support.annotation.Nullable;
 
 import com.lixin.Util.LogUtil;
+import com.lixin.connectUtil.NettyClient;
 import com.lixin.entity.entityInterfaceImp.EntityObjectImp;
+import com.lixin.gameInterface.CmdInterface;
 import com.lixin.gameInterfaceImp.TouchEvent;
 
 /**
@@ -19,16 +21,12 @@ public class BigSmallCircle extends EntityObjectImp {
     private Circle smallCircle;
     //按钮布局大圆半径
     private float largeR;
+    //大圆半径
     private float bigCircleR;
-    //摇杆右边界宽度相对于屏幕的百分比
-    private static final float rokerCenterXMarginRight4ScreenWidthPercent = 0.05f;
-    //摇杆右边界高度相对有屏幕地百分比
-    private static final float rokerCenterYMarginRight4ScreenWidthPercent = 0.05f;
-    //摇杆半径相对于屏幕的百分比
-    private static final float rokerR4ScreenWidthPercent = 0.1f;
     private int screenWidth;
     private int screenHeight;
     private int pointer;
+    private int isLift;
     private Paint paint;
     private boolean WORKING;
     //一般坐标的弧度
@@ -38,8 +36,9 @@ public class BigSmallCircle extends EntityObjectImp {
     private double degrees = 45;
 
     //摇杆坐标
-    private float x,y;
-    public BigSmallCircle(int screenWidth, int screenHeight, Paint paint,double degrees,float bigCircleR, float x,float y) {
+    private float x, y;
+
+    public BigSmallCircle(int screenWidth, int screenHeight, Paint paint, double degrees, float bigCircleR, float x, float y) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.paint = paint;
@@ -49,18 +48,6 @@ public class BigSmallCircle extends EntityObjectImp {
         this.y = y;
         bigCircle = new Circle(paint);
         smallCircle = new Circle(paint);
-       // double degrees = 45;
-     //   largeR = (float) (screenWidth / 3 * 1.5);
-
-        /*bigCircle.setCenterR(screenWidth * rokerR4ScreenWidthPercent + 10);
-        bigCircle.setCenterX(screenWidth - bigCircle.getCenterR() * 1.5f
-                - rokerCenterXMarginRight4ScreenWidthPercent * screenWidth);
-        bigCircle.setCenterY(screenHeight - bigCircle.getCenterR() * 1.5f
-                - rokerCenterYMarginRight4ScreenWidthPercent * screenHeight);
-
-        bigCircle.setCenterX(getBtnsX(1, degrees));
-        bigCircle.setCenterY(getBtnsY(1, degrees));
-        bigCircle.setCenterR(largeR/2);*/
         bigCircle.setCenterR(bigCircleR);
         bigCircle.setCenterX(x);
         bigCircle.setCenterY(y);
@@ -76,19 +63,19 @@ public class BigSmallCircle extends EntityObjectImp {
         return Math.toRadians(scale * degrees);
     }
 
-    public static float getRightBtnsX(int screenWidth,float largeR,int scale, double degrees) {
+    public static float getRightBtnsX(int screenWidth, float largeR, int scale, double degrees) {
         return (float) (screenWidth - largeR * Math.sin(getBtnRad(scale, degrees)));
     }
 
-    public static float getRightBtnsY(int scale,float largeR, double degrees) {
+    public static float getRightBtnsY(int scale, float largeR, double degrees) {
         return (float) (largeR * Math.cos(getBtnRad(scale, degrees)));
     }
 
-    public static float getLeftBtnsX(int screenWidth,float largeR,int scale, double degrees) {
+    public static float getLeftBtnsX(int screenWidth, float largeR, int scale, double degrees) {
         return (float) (screenWidth - largeR * Math.sin(getBtnRad(scale, degrees)));
     }
 
-    public static float getLeftBtnsY(int screenHeight,int scale,float largeR, double degrees) {
+    public static float getLeftBtnsY(int screenHeight, int scale, float largeR, double degrees) {
         return (float) (screenHeight - largeR * Math.cos(getBtnRad(scale, degrees)));
     }
 
@@ -115,13 +102,15 @@ public class BigSmallCircle extends EntityObjectImp {
     }
 
     @Override
-    public boolean OnClick(TouchEvent touchEvent) {
+    public boolean OnClick(TouchEvent touchEvent, NettyClient nettyClient, String cmd) {
         if (OnClickInBigCircle(touchEvent)) {
             pointer = touchEvent.pointer;
+
         }
 
         LogUtil.d(className, "observerUpData touchEvent.pointer = " + pointer);
         if (pointer == touchEvent.pointer) {
+            this.isLift = isLift;
             if (touchEvent.type == TouchEvent.TOUCH_UP) {
                 reset();
             } else {
@@ -129,11 +118,13 @@ public class BigSmallCircle extends EntityObjectImp {
                     begin(touchEvent.x, touchEvent.y);
                 } else if (touchEvent.type == TouchEvent.TOUCH_MOVE) {
                     update(touchEvent.x, touchEvent.y);
+                    nettyClient.insertCmd(cmd);
                 }
             }
         }
         return true;
     }
+
 
     public void reset() {
         smallCircle.setCenterX(bigCircle.getCenterX());
@@ -208,6 +199,7 @@ public class BigSmallCircle extends EntityObjectImp {
         smallCircle.setCenterX((float) (bigCenterR * Math.cos(currentRad) + bigCenterX));
         smallCircle.setCenterY((float) (bigCenterR * Math.sin(currentRad) + bigCenterY));
     }
+
     public double getDegressByNormalSystem() {
         return degressByNormalSystem;
     }
