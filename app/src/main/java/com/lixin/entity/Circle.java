@@ -1,5 +1,8 @@
 package com.lixin.entity;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 import com.lixin.Util.LogUtil;
 import com.lixin.entity.entityInterface.EntityObject;
 import com.lixin.entity.entityInterfaceImp.EntityObjectImp;
@@ -9,12 +12,13 @@ import com.lixin.gameInterfaceImp.TouchEvent;
  * Created by li on 2018/10/13.
  */
 
-public class Circle  extends EntityObjectImp{
+public class Circle implements EntityObject {
     private float centerX = 120;
     private float centerY = 120;
     private float centerR = 40;
-
-    public Circle() {
+    private Paint paint;
+    public Circle(Paint paint) {
+        this.paint = paint;
     }
 
     public float getCenterX() {
@@ -42,6 +46,11 @@ public class Circle  extends EntityObjectImp{
     }
 
     @Override
+    public void drawSelf(Canvas canvas) {
+        canvas.drawCircle(centerX, centerY, centerR, paint);
+    }
+
+    @Override
     public boolean OnClick(TouchEvent touchEvent) {
         if (Math.sqrt(Math.pow((centerX - touchEvent.x), 2)
                 + Math.pow((centerY - touchEvent.y), 2)) <= centerR) {
@@ -49,5 +58,7 @@ public class Circle  extends EntityObjectImp{
         } else {
             return false;
         }
+
+
     }
 }
