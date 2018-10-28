@@ -3,4 +3,3 @@
 一下是效果图
 ![头像](https://github.com/724898928/ThingsController/tree/master/app/src/main/java/com/lixin/assets/thingController.png)
 <div align=center><img width="200" height="500" src="https://github.com/724898928/ThingsController/tree/master/app/src/main/java/com/lixin/assets/thingController.jpg"></div>
-
