@@ -126,7 +126,7 @@ public class BigSmallCircle extends EntityObjectImp implements ObserverListener 
             if (touchEvent.y > screenHeight/2){
                 this.isLift = 1;
                 LogUtil.d(TAG,  "OnClick  this.isLift = 1; " + pointer);
-                nettyClient.insertCmd(CmdInterface.GAME_SPEED_UP);
+                RockerDirectionCmd(touchEvent,nettyClient, bigCircle);
             }else{
                 this.isLift = 0;
                 LogUtil.d(TAG,  "OnClick  this.isLift = 1; " + pointer);
@@ -136,6 +136,62 @@ public class BigSmallCircle extends EntityObjectImp implements ObserverListener 
         return true;
     }
 
+    /**
+     * 判断左摇杆方向
+     * @param touchEvent
+     * @param nettyClient
+     * @param bigCircle
+     */
+    public void  RockerDirectionCmd(TouchEvent touchEvent,NettyClient nettyClient, Circle bigCircle ){
+
+        if (touchEvent != null){
+            if ((touchEvent.x == (int) bigCircle.getCenterX()) && (touchEvent.y == (int) bigCircle.getCenterY()))
+                return;
+            if ((touchEvent.x == (int) bigCircle.getCenterX()))
+            {
+                if((touchEvent.y > (int) bigCircle.getCenterY())){
+                    nettyClient.insertCmd(CmdInterface.GAME_TURN_LEFT);
+                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_TURN_LEFT");
+                    return;
+                }else if ((touchEvent.y < (int) bigCircle.getCenterY())){
+                    nettyClient.insertCmd(CmdInterface.GAME_TURN_RIGHT);
+                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_TURN_RIGHT");
+                    return;
+                }
+            }
+            if ((touchEvent.y == (int) bigCircle.getCenterY())){
+                if((touchEvent.x > (int) bigCircle.getCenterX())){
+                    nettyClient.insertCmd(CmdInterface.GAME_RETREAT);
+                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_RETREAT");
+                    return;
+                }else if ((touchEvent.x < (int) bigCircle.getCenterX())){
+                    nettyClient.insertCmd(CmdInterface.GAME_GO_FORWARD);
+                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_GO_FORWARD");
+                    return;
+                }
+            }
+            if (((float)touchEvent.x < bigCircle.getCenterX()))
+            {
+                nettyClient.insertCmd(CmdInterface.GAME_GO_FORWARD);
+                if ( ((float)touchEvent.y < bigCircle.getCenterY())){
+                    nettyClient.insertCmd(CmdInterface.GAME_TURN_RIGHT);
+                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_TURN_RIGHT  CmdInterface.GAME_GO_FORWARD");
+                }else if (touchEvent.y > bigCircle.getCenterY()){
+                    nettyClient.insertCmd(CmdInterface.GAME_TURN_LEFT);
+                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_TURN_LEFT  CmdInterface.GAME_GO_FORWARD");
+                }
+            }else  if (((float)touchEvent.x > bigCircle.getCenterX())){
+                nettyClient.insertCmd(CmdInterface.GAME_RETREAT);
+                if ( ((float)touchEvent.y < bigCircle.getCenterY())){
+                    nettyClient.insertCmd(CmdInterface.GAME_TURN_RIGHT);
+                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_TURN_RIGHT  CmdInterface.GAME_RETREAT");
+                }else if (touchEvent.y > bigCircle.getCenterY()){
+                    nettyClient.insertCmd(CmdInterface.GAME_TURN_LEFT);
+                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_TURN_LEFT  CmdInterface.GAME_RETREAT");
+                }
+            }
+        }
+    }
 
     public void reset() {
         smallCircle.setCenterX(bigCircle.getCenterX());
@@ -196,6 +252,14 @@ public class BigSmallCircle extends EntityObjectImp implements ObserverListener 
         return rad;
     }
 
+    /**
+     * 获取两点的角度
+     * @param bigCenterX
+     * @param bigCenterY
+     * @param smallCenterX
+     * @param smallCenterY
+     * @return
+     */
     private double getDegrees(float bigCenterX, float bigCenterY, float smallCenterX, float smallCenterY) {
         float ret = (float) Math.atan((bigCenterY - smallCenterY) / (-smallCenterX) * 180 / Math.PI);
         if (bigCenterX < smallCenterX) {
