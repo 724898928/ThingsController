@@ -9,4 +9,6 @@ import com.lixin.gameInterfaceImp.TouchEvent;
 
 public interface ObserverListener {
     void observerUpData(TouchEvent touchEvent);//刷新操作
+    void OnClickListener(TouchEvent touchEvent);//刷新操作
+
 }

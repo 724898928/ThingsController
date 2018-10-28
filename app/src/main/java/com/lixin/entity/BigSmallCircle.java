@@ -4,19 +4,23 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.lixin.Util.LogUtil;
 import com.lixin.connectUtil.NettyClient;
 import com.lixin.entity.entityInterfaceImp.EntityObjectImp;
 import com.lixin.gameInterface.CmdInterface;
+import com.lixin.gameInterface.ObserverListener;
 import com.lixin.gameInterfaceImp.TouchEvent;
+
+import java.util.logging.Logger;
 
 /**
  * Created by li on 2018/10/13.
  */
 
-public class BigSmallCircle extends EntityObjectImp {
-    private String className = "com.li BigSmallCircle ";
+public class BigSmallCircle extends EntityObjectImp implements ObserverListener {
+    private final String TAG = "com.li BigSmallCircle ";
     private Circle bigCircle;
     private Circle smallCircle;
     //按钮布局大圆半径
@@ -108,9 +112,8 @@ public class BigSmallCircle extends EntityObjectImp {
 
         }
 
-        LogUtil.d(className, "observerUpData touchEvent.pointer = " + pointer);
+        LogUtil.d(TAG, "observerUpData touchEvent.pointer = " + pointer);
         if (pointer == touchEvent.pointer) {
-            this.isLift = isLift;
             if (touchEvent.type == TouchEvent.TOUCH_UP) {
                 reset();
             } else {
@@ -118,8 +121,16 @@ public class BigSmallCircle extends EntityObjectImp {
                     begin(touchEvent.x, touchEvent.y);
                 } else if (touchEvent.type == TouchEvent.TOUCH_MOVE) {
                     update(touchEvent.x, touchEvent.y);
-                    nettyClient.insertCmd(cmd);
                 }
+            }
+            if (touchEvent.y > screenHeight/2){
+                this.isLift = 1;
+                LogUtil.d(TAG,  "OnClick  this.isLift = 1; " + pointer);
+                nettyClient.insertCmd(CmdInterface.GAME_SPEED_UP);
+            }else{
+                this.isLift = 0;
+                LogUtil.d(TAG,  "OnClick  this.isLift = 1; " + pointer);
+                nettyClient.insertCmd(CmdInterface.GAMESTART);
             }
         }
         return true;
@@ -141,9 +152,10 @@ public class BigSmallCircle extends EntityObjectImp {
             } else {
                 setSmallCircleXY(bigCircle.getCenterX(), bigCircle.getCenterY(), bigCircle.getCenterR(), currentRad);
             }
-        }
-        degressByNormalSystem = getDegrees(bigCircle.getCenterX(), bigCircle.getCenterY(), smallCircle.getCenterX(), smallCircle.getCenterY());
 
+            degressByNormalSystem = getDegrees(bigCircle.getCenterX(), bigCircle.getCenterY(), smallCircle.getCenterX(), smallCircle.getCenterY());
+
+        }
     }
 
     public void begin(int touchX, int touchY) {
@@ -212,4 +224,13 @@ public class BigSmallCircle extends EntityObjectImp {
         return WORKING;
     }
 
+    @Override
+    public void observerUpData(TouchEvent touchEvent) {
+        Log.d(TAG, "observerUpData: ");
+    }
+
+    @Override
+    public void OnClickListener(TouchEvent touchEvent) {
+        Log.d(TAG, "OnClickListener: ");
+    }
 }

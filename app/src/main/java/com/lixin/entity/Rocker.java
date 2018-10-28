@@ -115,8 +115,8 @@ public class Rocker extends EntityObjectImp implements EntityObject {
     @Override
     public boolean OnClick(TouchEvent touchEvent, NettyClient nettyClient,  String cmd) {
         nettyClient = this.nettyClient;
-        bigSmallCircleLeft.OnClick(touchEvent, nettyClient,CmdInterface.GAME_TURN_LEFT);
-        bigSmallCircleRight.OnClick(touchEvent, nettyClient, CmdInterface.GAME_TURN_RIGHT);
+        bigSmallCircleLeft.OnClick(touchEvent, nettyClient,null);
+        bigSmallCircleRight.OnClick(touchEvent, nettyClient, null);
         //判断加速按钮是否按下
         if (btnCircle1.OnClick(touchEvent, nettyClient,null)) {
 

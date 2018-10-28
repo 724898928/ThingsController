@@ -140,4 +140,9 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
         LogUtil.d(className, "observerUpData end");
 
     }
+
+    @Override
+    public void OnClickListener(TouchEvent touchEvent) {
+
+    }
 }

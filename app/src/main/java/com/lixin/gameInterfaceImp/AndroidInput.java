@@ -78,4 +78,9 @@ public class AndroidInput implements Input,ObserverListener {
     public void observerUpData(com.lixin.gameInterfaceImp.TouchEvent touchEvent) {
 
     }
+
+    @Override
+    public void OnClickListener(com.lixin.gameInterfaceImp.TouchEvent touchEvent) {
+
+    }
 }

@@ -187,6 +187,7 @@ public class MultiTouchHandler implements TouchHandler {
                 }
                 LogUtil.d(className, "touchEvent = "+touchEvent.toString());
                 observerListener.observerUpData(touchEvent);
+                observerListener.OnClickListener(touchEvent);
             }
             LogUtil.d(className, "onTouch end");
             return true;
