@@ -44,6 +44,7 @@ public class NettyClient{
     public static NettyClient getInstance() {
         if (nettyClient == null) {
             nettyClient = new NettyClient();
+
         }
         return nettyClient;
     }
@@ -189,5 +190,21 @@ public class NettyClient{
         ByteBuf pingMessage = Unpooled.buffer();
         pingMessage.writeBytes(req);
         return pingMessage;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public String getInetHost() {
+        return inetHost;
+    }
+
+    public void setInetHost(String inetHost) {
+        this.inetHost = inetHost;
     }
 }

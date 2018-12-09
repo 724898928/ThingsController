@@ -97,8 +97,8 @@ public class BigSmallCircle extends EntityObjectImp implements ObserverListener 
      * @return
      */
     public boolean OnClickInBigCircle(TouchEvent touchEvent) {
-        if (Math.sqrt(Math.pow((bigCircle.getCenterX() - touchEvent.x), 2)
-                + Math.pow((bigCircle.getCenterY() - touchEvent.y), 2)) <= bigCircle.getCenterR()) {
+        if (Math.sqrt(Math.pow((bigCircle.getCenterX() - touchEvent.x+10), 2)
+                + Math.pow((bigCircle.getCenterY() - touchEvent.y+10), 2)) <= bigCircle.getCenterR()) {
             return true;
         } else {
             return false;
@@ -124,9 +124,11 @@ public class BigSmallCircle extends EntityObjectImp implements ObserverListener 
                 }
             }
             if (touchEvent.y > screenHeight/2){
-                this.isLift = 1;
-                LogUtil.d(TAG,  "OnClick  this.isLift = 1; " + pointer);
-                RockerDirectionCmd(touchEvent,nettyClient, bigCircle);
+                if (OnClickInBigCircle(touchEvent)) {
+                    this.isLift = 1;
+                    LogUtil.d(TAG, "OnClick  this.isLift = 1; " + pointer);
+                    RockerDirectionCmd(touchEvent, nettyClient, bigCircle);
+                }
             }else{
                 this.isLift = 0;
                 LogUtil.d(TAG,  "OnClick  this.isLift = 1; " + pointer);
