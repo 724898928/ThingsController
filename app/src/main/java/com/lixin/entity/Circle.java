@@ -3,10 +3,8 @@ package com.lixin.entity;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.lixin.Util.LogUtil;
 import com.lixin.connectUtil.NettyClient;
 import com.lixin.entity.entityInterface.EntityObject;
-import com.lixin.entity.entityInterfaceImp.EntityObjectImp;
 import com.lixin.gameInterfaceImp.TouchEvent;
 
 /**

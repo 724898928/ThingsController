@@ -1,19 +1,15 @@
 package com.lixin.entity;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.lixin.Util.LogUtil;
+import com.lixin.util.LogUtil;
 import com.lixin.connectUtil.NettyClient;
 import com.lixin.entity.entityInterfaceImp.EntityObjectImp;
 import com.lixin.gameInterface.CmdInterface;
 import com.lixin.gameInterface.ObserverListener;
 import com.lixin.gameInterfaceImp.TouchEvent;
-
-import java.util.logging.Logger;
 
 /**
  * Created by li on 2018/10/13.
@@ -38,7 +34,7 @@ public class BigSmallCircle extends EntityObjectImp implements ObserverListener 
     //当前摇杆的弧度
     private double currentRad = Double.NaN;
     private double degrees = 45;
-
+    StringBuilder strings = new StringBuilder();
     //摇杆坐标
     private float x, y;
 
@@ -123,6 +119,7 @@ public class BigSmallCircle extends EntityObjectImp implements ObserverListener 
                     update(touchEvent.x, touchEvent.y);
                 }
             }
+            //判断是否是左摇杆
             if (touchEvent.y > screenHeight/2){
                 if (OnClickInBigCircle(touchEvent)) {
                     this.isLift = 1;
@@ -130,6 +127,7 @@ public class BigSmallCircle extends EntityObjectImp implements ObserverListener 
                     RockerDirectionCmd(touchEvent, nettyClient, bigCircle);
                 }
             }else{
+                //右摇杆逻辑
                 this.isLift = 0;
                 LogUtil.d(TAG,  "OnClick  this.isLift = 1; " + pointer);
                 nettyClient.insertCmd(CmdInterface.GAMESTART);
@@ -145,6 +143,7 @@ public class BigSmallCircle extends EntityObjectImp implements ObserverListener 
      * @param bigCircle
      */
     public void  RockerDirectionCmd(TouchEvent touchEvent,NettyClient nettyClient, Circle bigCircle ){
+/*
 
         if (touchEvent != null){
             if ((touchEvent.x == (int) bigCircle.getCenterX()) && (touchEvent.y == (int) bigCircle.getCenterY()))
@@ -193,6 +192,23 @@ public class BigSmallCircle extends EntityObjectImp implements ObserverListener 
                 }
             }
         }
+*/
+
+        if (touchEvent != null) {
+            float dx = touchEvent.x - bigCircle.getCenterX();
+            float dy = touchEvent.y - bigCircle.getCenterY();
+
+            strings.append(String.valueOf(dx));
+            strings.append(",");
+            strings.append(String.valueOf(dy));
+            nettyClient.insertCmd(strings.toString());
+            strings.setLength(0);
+        }
+
+
+
+
+
     }
 
     public void reset() {

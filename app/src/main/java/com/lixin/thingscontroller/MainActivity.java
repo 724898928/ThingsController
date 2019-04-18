@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.lixin.Util.LogUtil;
+import com.lixin.util.LogUtil;
 import com.lixin.view.MySurfaceView;
 import com.lixin.view.MyOpenGl;
 

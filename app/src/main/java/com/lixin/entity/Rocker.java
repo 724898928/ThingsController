@@ -4,14 +4,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.lixin.Util.LogUtil;
+import com.lixin.util.LogUtil;
 import com.lixin.connectUtil.NettyClient;
 import com.lixin.entity.entityInterface.EntityObject;
 import com.lixin.entity.entityInterfaceImp.EntityObjectImp;
 import com.lixin.gameInterface.CmdInterface;
-import com.lixin.gameInterface.Input;
-import com.lixin.gameInterface.Object;
-import com.lixin.gameInterface.TouchHandler;
 import com.lixin.gameInterfaceImp.TouchEvent;
 
 /**

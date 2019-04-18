@@ -1,21 +1,17 @@
 package com.lixin.view;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.Display;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
-import com.lixin.Util.LogUtil;
+import com.lixin.util.LogUtil;
 import com.lixin.entity.Rocker;
 import com.lixin.gameInterface.ObserverListener;
 import com.lixin.gameInterface.TouchHandler;
-import com.lixin.gameInterfaceImp.AndroidGame;
 import com.lixin.gameInterfaceImp.MultiTouchHandler;
 import com.lixin.gameInterfaceImp.TouchEvent;
 import com.lixin.connectUtil.NettyClient;

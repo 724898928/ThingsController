@@ -1,10 +1,9 @@
 package com.lixin.gameInterfaceImp;
 
-import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.lixin.Util.LogUtil;
+import com.lixin.util.LogUtil;
 import com.lixin.gameInterface.ObserverListener;
 import com.lixin.gameInterface.PoolObjectFactory;
 import com.lixin.gameInterface.TouchHandler;
