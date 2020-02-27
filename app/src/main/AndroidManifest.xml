@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme">
         <activity android:name="com.lixin.thingscontroller.MainActivity"
             android:screenOrientation="portrait"
-            android:configChanges="keyboard|keyboardHidden|orientation">
+            android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

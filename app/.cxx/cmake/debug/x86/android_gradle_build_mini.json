@@ -1,0 +1,19 @@
+{
+  "buildFiles": [
+    "E:\\studey\\SDK\\ndk-bundle\\build\\cmake\\android.toolchain.cmake",
+    "E:\\studey\\SDK\\ndk-bundle\\build\\cmake\\platforms.cmake",
+    "E:\\androidProject\\ThingsController\\app\\CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "E:\\studey\\SDK\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\androidProject\\ThingsController\\app\\.cxx\\cmake\\debug\\x86\" clean"
+  ],
+  "buildTargetsCommand": "E:\\studey\\SDK\\cmake\\3.10.2.4988404\\bin\\ninja.exe  -C \"E:\\androidProject\\ThingsController\\app\\.cxx\\cmake\\debug\\x86\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "native-lib-Debug-x86": {
+      "artifactName": "native-lib",
+      "buildCommand": "E:\\studey\\SDK\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\androidProject\\ThingsController\\app\\.cxx\\cmake\\debug\\x86\" native-lib",
+      "abi": "x86",
+      "output": "E:\\androidProject\\ThingsController\\app\\build\\intermediates\\cmake\\debug\\obj\\x86\\libnative-lib.so"
+    }
+  }
+}

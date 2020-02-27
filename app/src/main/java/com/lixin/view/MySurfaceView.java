@@ -1,9 +1,12 @@
 package com.lixin.view;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.view.Display;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
@@ -31,12 +34,13 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
     boolean running = false;
     private  Rocker rocker;
     private  Canvas canvas;
-    private Display display;
+    private  WindowManager.LayoutParams display;
 
     private MultiTouchHandler multiTouchHandler;
     private List<TouchEvent> touchEvents;
     private String className = "com.li MySurfaceView";
     private NettyClient nettyClient;
+    private Point outSize;
     public MySurfaceView(Activity context) {
         super(context);
         LogUtil.d(className, "MySurfaceView begin");
@@ -44,8 +48,9 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
         //this.framebuffer =
         nettyClient = NettyClient.getInstance();
         this.holder = getHolder();
-        WindowManager windowManager = context.getWindowManager();
-        display = windowManager.getDefaultDisplay();
+      //  WindowManager windowManager = context.getWindowManager();
+        display = context.getWindow().getAttributes();
+        //outSize = windowManager
         surfaceCreated(holder);
         setFocusable(true);
         TouchHandler touchHandler = new MultiTouchHandler(this, this, 1, 1);
@@ -111,8 +116,8 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        SCREEN_W = display.getWidth();
-        SCREEN_H = display.getHeight();
+        SCREEN_W = display.width;
+        SCREEN_H = display.height;
         running = true;
         rocker = new Rocker(SCREEN_W, SCREEN_H, nettyClient);
         mThread = new Thread(this);
@@ -141,4 +146,46 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
     public void OnClickListener(TouchEvent touchEvent) {
 
     }
+    public boolean isScreenChange() {
+
+        Configuration mConfiguration = this.getResources().getConfiguration(); // 获取设置的配置信息
+        int ori = mConfiguration.orientation; // 获取屏幕方向
+
+        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+            // 横屏
+            return true;
+        } else if (ori == Configuration.ORIENTATION_PORTRAIT) {
+
+            // 竖屏
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     *
+     * 获取当前屏幕旋转角度
+     *
+     * @param activity
+     * @return 0表示是竖屏; 90表示是左横屏; 180表示是反向竖屏; 270表示是右横屏
+     */
+    public static int getDisplayRotation(Activity activity) {
+        if (activity == null)
+            return 0;
+
+        int rotation = activity.getWindowManager().getDefaultDisplay()
+                .getRotation();
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                return 0;
+            case Surface.ROTATION_90:
+                return 90;
+            case Surface.ROTATION_180:
+                return 180;
+            case Surface.ROTATION_270:
+                return 270;
+        }
+        return 0;
+    }
+
 }

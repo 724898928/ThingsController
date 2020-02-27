@@ -1,0 +1,2 @@
+ninja: Entering directory `E:\androidProject\ThingsController\app\.cxx\cmake\debug\x86'
+ninja: no work to do.

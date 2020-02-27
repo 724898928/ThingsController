@@ -1,0 +1,7 @@
+[
+{
+  "directory": "E:/androidProject/ThingsController/app/.cxx/cmake/debug/x86_64",
+  "command": "E:\\studey\\SDK\\ndk-bundle\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=x86_64-none-linux-android26 --gcc-toolchain=E:/studey/SDK/ndk-bundle/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=E:/studey/SDK/ndk-bundle/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Dnative_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security -stdlib=libc++  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles\\native-lib.dir\\src\\main\\cpp\\native-lib.cpp.o -c E:\\androidProject\\ThingsController\\app\\src\\main\\cpp\\native-lib.cpp",
+  "file": "E:/androidProject/ThingsController/app/src/main/cpp/native-lib.cpp"
+}
+]
