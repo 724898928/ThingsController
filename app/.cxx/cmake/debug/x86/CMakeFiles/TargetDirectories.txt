@@ -1,3 +1,0 @@
-E:/androidProject/ThingsController/app/.cxx/cmake/debug/x86/CMakeFiles/native-lib.dir
-E:/androidProject/ThingsController/app/.cxx/cmake/debug/x86/CMakeFiles/edit_cache.dir
-E:/androidProject/ThingsController/app/.cxx/cmake/debug/x86/CMakeFiles/rebuild_cache.dir
