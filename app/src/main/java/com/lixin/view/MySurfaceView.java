@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -34,7 +35,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
     boolean running = false;
     private  Rocker rocker;
     private  Canvas canvas;
-    private  WindowManager.LayoutParams display;
+    private DisplayMetrics dm;
 
     private MultiTouchHandler multiTouchHandler;
     private List<TouchEvent> touchEvents;
@@ -49,7 +50,10 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
         nettyClient = NettyClient.getInstance();
         this.holder = getHolder();
       //  WindowManager windowManager = context.getWindowManager();
-        display = context.getWindow().getAttributes();
+        dm = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay().getRealMetrics(dm);
+
+       // display = context.getWindow().getAttributes();
         //outSize = windowManager
         surfaceCreated(holder);
         setFocusable(true);
@@ -116,8 +120,8 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        SCREEN_W = display.width;
-        SCREEN_H = display.height;
+        SCREEN_W = dm.widthPixels;
+        SCREEN_H = dm.heightPixels;
         running = true;
         rocker = new Rocker(SCREEN_W, SCREEN_H, nettyClient);
         mThread = new Thread(this);
