@@ -6,11 +6,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.WindowManager;
 
 import com.lixin.util.LogUtil;
 import com.lixin.entity.Rocker;
@@ -49,12 +47,9 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
         //this.framebuffer =
         nettyClient = NettyClient.getInstance();
         this.holder = getHolder();
-      //  WindowManager windowManager = context.getWindowManager();
+
         dm = new DisplayMetrics();
         context.getWindowManager().getDefaultDisplay().getRealMetrics(dm);
-
-       // display = context.getWindow().getAttributes();
-        //outSize = windowManager
         surfaceCreated(holder);
         setFocusable(true);
         TouchHandler touchHandler = new MultiTouchHandler(this, this, 1, 1);

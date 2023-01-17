@@ -2,8 +2,9 @@ package com.lixin.view;
 
 import android.opengl.GLSurfaceView;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.Random;
 
