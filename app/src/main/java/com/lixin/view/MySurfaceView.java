@@ -48,8 +48,10 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
         nettyClient = NettyClient.getInstance();
         this.holder = getHolder();
 
+        // 设置全屏
         dm = new DisplayMetrics();
         context.getWindowManager().getDefaultDisplay().getRealMetrics(dm);
+
         surfaceCreated(holder);
         setFocusable(true);
         TouchHandler touchHandler = new MultiTouchHandler(this, this, 1, 1);
@@ -136,7 +138,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
     @Override
     public void observerUpData(TouchEvent touchEvent) {
         LogUtil.d(className, "observerUpData begin");
-        rocker.OnClick(touchEvent,nettyClient,null);
+        rocker.OnClick(touchEvent,nettyClient,null,null);
         LogUtil.d(className, "observerUpData end");
 
     }
@@ -145,8 +147,8 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
     public void OnClickListener(TouchEvent touchEvent) {
 
     }
-    public boolean isScreenChange() {
 
+    public boolean isScreenChange() {
         Configuration mConfiguration = this.getResources().getConfiguration(); // 获取设置的配置信息
         int ori = mConfiguration.orientation; // 获取屏幕方向
 

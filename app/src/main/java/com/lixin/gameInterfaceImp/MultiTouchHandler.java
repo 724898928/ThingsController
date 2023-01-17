@@ -32,6 +32,7 @@ public class MultiTouchHandler implements TouchHandler {
     private float scaleX;
     private float scaleY;
     private ObserverListener observerListener ;
+
     public MultiTouchHandler(View view, ObserverListener observerListener, float scaleX, float scaleY) {
         LogUtil.d(className, "MultiTouchHandler begin");
         PoolObjectFactory factory = new PoolObjectFactory() {

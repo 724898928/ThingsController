@@ -5,6 +5,7 @@ import android.graphics.Paint;
 
 import com.lixin.connectUtil.NettyClient;
 import com.lixin.entity.entityInterface.EntityObject;
+import com.lixin.entity.entityInterface.OnClickListenerObserver;
 import com.lixin.gameInterfaceImp.TouchEvent;
 
 /**
@@ -51,9 +52,12 @@ public class Circle implements EntityObject {
     }
 
     @Override
-    public boolean OnClick(TouchEvent touchEvent, NettyClient nettyClient, String cmd) {
+    public boolean OnClick(TouchEvent touchEvent, NettyClient nettyClient, String cmd, OnClickListenerObserver oco) {
         if (Math.sqrt(Math.pow((centerX - touchEvent.x), 2)
                 + Math.pow((centerY - touchEvent.y), 2)) <= centerR) {
+            if (null != oco){
+                oco.onClick(nettyClient);
+            }
             return true;
         } else {
             return false;

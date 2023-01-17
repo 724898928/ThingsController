@@ -3,7 +3,6 @@ package com.lixin.entity.entityInterface;
 import android.graphics.Canvas;
 
 import com.lixin.connectUtil.NettyClient;
-import com.lixin.gameInterface.Object;
 import com.lixin.gameInterfaceImp.TouchEvent;
 
 /**
@@ -12,5 +11,5 @@ import com.lixin.gameInterfaceImp.TouchEvent;
 
 public interface EntityObject {
     void drawSelf(Canvas canvas);
-    boolean OnClick(TouchEvent touchEvent,NettyClient nettyClient, String cmd);
+    boolean OnClick(TouchEvent touchEvent,NettyClient nettyClient, String cmd, OnClickListenerObserver onClickListenerObserver);
 }

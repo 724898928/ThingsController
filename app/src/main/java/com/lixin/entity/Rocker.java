@@ -3,7 +3,9 @@ package com.lixin.entity;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
+import com.lixin.entity.entityInterface.OnClickListenerObserver;
 import com.lixin.util.LogUtil;
 import com.lixin.connectUtil.NettyClient;
 import com.lixin.entity.entityInterface.EntityObject;
@@ -16,7 +18,7 @@ import com.lixin.gameInterfaceImp.TouchEvent;
  */
 
 public class Rocker extends EntityObjectImp implements EntityObject {
-    private String className = "com.li Rocker ";
+    private final String TAG = Rocker.class.getSimpleName();
     //一般坐标的弧度
     private double degressByNormalSystem = Double.NaN;
     //当前摇杆的弧度
@@ -50,6 +52,7 @@ public class Rocker extends EntityObjectImp implements EntityObject {
     private NettyClient nettyClient;
     private double degreesLeft = 45;
     private double degreesRight = 22.5;
+    StringBuilder strings = new StringBuilder();
 
     public Rocker(int screenWidth, int screenHeight, NettyClient nettyClient) {
         this.screenHeight = screenHeight;
@@ -110,32 +113,61 @@ public class Rocker extends EntityObjectImp implements EntityObject {
      * @param touchEvent
      */
     @Override
-    public boolean OnClick(TouchEvent touchEvent, NettyClient nettyClient,  String cmd) {
+    public boolean OnClick(TouchEvent touchEvent, NettyClient nettyClient, String cmd, OnClickListenerObserver onClickListenerObserver) {
         nettyClient = this.nettyClient;
-        bigSmallCircleLeft.OnClick(touchEvent, nettyClient,null);
-        bigSmallCircleRight.OnClick(touchEvent, nettyClient, null);
-        //判断加速按钮是否按下
-        if (btnCircle1.OnClick(touchEvent, nettyClient,null)) {
+        //判断是否是左摇杆
 
-            if (touchEvent.type == TouchEvent.TOUCH_DOWN) {
-                nettyClient.insertCmd(CmdInterface.GAMESTART);
-                LogUtil.d(className, "observerUpData 正在加速! ");
-            }
+        if (touchEvent.y > screenHeight/2){
+            bigSmallCircleLeft.OnClick(touchEvent, nettyClient, null, nettyClient15 -> {
+                Log.d(TAG, "OnClick: LeftBigSmallCircle");
+                if (touchEvent != null) {
+                    float dx = touchEvent.x ;
+                    float dy = touchEvent.y ;
+                    strings.append(cmd);
+                    strings.append(String.valueOf(dx));
+                    strings.append(",");
+                    strings.append(String.valueOf(dy));
+                    nettyClient15.insertCmd(strings.toString());
+                    strings.setLength(0);
+                }
+            });
+        }else {
+            bigSmallCircleRight.OnClick(touchEvent, nettyClient, null, nettyClient14 -> {
+                Log.d(TAG, "OnClick: RightBigSmallCircle");
+                if (touchEvent != null) {
+                    float dx = touchEvent.x ;
+                    float dy = touchEvent.y ;
+                    strings.append(String.valueOf(dx));
+                    strings.append(",");
+                    strings.append(String.valueOf(dy));
+                    nettyClient14.insertCmd(strings.toString());
+                    strings.setLength(0);
+                }
+            });
         }
+
+        //判断加速按钮是否按下
+        btnCircle1.OnClick(touchEvent, nettyClient, null, nettyClient1 -> {
+            if (touchEvent.type == TouchEvent.TOUCH_DOWN) {
+                nettyClient1.insertCmd(CmdInterface.GAMESTART);
+                LogUtil.d(TAG, "observerUpData 正在加速! ");
+            }
+        });
+
         //判断减速按钮是否按下
-        if (btnCircle2.OnClick(touchEvent, nettyClient,null)) {
-            nettyClient.insertCmd(CmdInterface.GAME_SPEED_UP);
+        btnCircle2.OnClick(touchEvent, nettyClient,null, nettyClient12 -> {
+            nettyClient12.insertCmd(CmdInterface.GAME_SPEED_UP);
             if (touchEvent.type == TouchEvent.TOUCH_DOWN) {
-                LogUtil.d(className, "observerUpData 正在减速! ");
+                LogUtil.d(TAG, "observerUpData 正在减速! ");
             }
-        }
+        });
         //判断停止按钮是否按下
-        if (btnCircle3.OnClick(touchEvent, nettyClient,null)) {
-            nettyClient.insertCmd(CmdInterface.GAME_SPEED_DOWN);
+        btnCircle3.OnClick(touchEvent, nettyClient, null, nettyClient13 -> {
+            nettyClient13.insertCmd(CmdInterface.GAME_SPEED_DOWN);
             if (touchEvent.type == TouchEvent.TOUCH_DOWN) {
-                LogUtil.d(className, "observerUpData 正在停止! ");
+                LogUtil.d(TAG, "observerUpData 正在停止! ");
             }
-        }
+        });
         return true;
     }
 

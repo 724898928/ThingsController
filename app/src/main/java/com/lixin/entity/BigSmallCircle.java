@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
 
+import com.lixin.entity.entityInterface.OnClickListenerObserver;
 import com.lixin.util.LogUtil;
 import com.lixin.connectUtil.NettyClient;
 import com.lixin.entity.entityInterfaceImp.EntityObjectImp;
@@ -102,12 +103,11 @@ public class BigSmallCircle extends EntityObjectImp implements ObserverListener 
     }
 
     @Override
-    public boolean OnClick(TouchEvent touchEvent, NettyClient nettyClient, String cmd) {
+    public boolean OnClick(TouchEvent touchEvent, NettyClient nettyClient, String cmd, OnClickListenerObserver oco) {
         if (OnClickInBigCircle(touchEvent)) {
             pointer = touchEvent.pointer;
 
         }
-
         LogUtil.d(TAG, "observerUpData touchEvent.pointer = " + pointer);
         if (pointer == touchEvent.pointer) {
             if (touchEvent.type == TouchEvent.TOUCH_UP) {
@@ -119,96 +119,14 @@ public class BigSmallCircle extends EntityObjectImp implements ObserverListener 
                     update(touchEvent.x, touchEvent.y);
                 }
             }
-            //判断是否是左摇杆
-            if (touchEvent.y > screenHeight/2){
-                if (OnClickInBigCircle(touchEvent)) {
-                    this.isLift = 1;
-                    LogUtil.d(TAG, "OnClick  this.isLift = 1; " + pointer);
-                    RockerDirectionCmd(touchEvent, nettyClient, bigCircle);
+
+            if (OnClickInBigCircle(touchEvent)) {
+                if (null != oco){
+                    oco.onClick(nettyClient);
                 }
-            }else{
-                //右摇杆逻辑
-                this.isLift = 0;
-                LogUtil.d(TAG,  "OnClick  this.isLift = 1; " + pointer);
-                nettyClient.insertCmd(CmdInterface.GAMESTART);
             }
         }
         return true;
-    }
-
-    /**
-     * 判断左摇杆方向
-     * @param touchEvent
-     * @param nettyClient
-     * @param bigCircle
-     */
-    public void  RockerDirectionCmd(TouchEvent touchEvent,NettyClient nettyClient, Circle bigCircle ){
-/*
-
-        if (touchEvent != null){
-            if ((touchEvent.x == (int) bigCircle.getCenterX()) && (touchEvent.y == (int) bigCircle.getCenterY()))
-                return;
-            if ((touchEvent.x == (int) bigCircle.getCenterX()))
-            {
-                if((touchEvent.y > (int) bigCircle.getCenterY())){
-                    nettyClient.insertCmd(CmdInterface.GAME_TURN_LEFT);
-                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_TURN_LEFT");
-                    return;
-                }else if ((touchEvent.y < (int) bigCircle.getCenterY())){
-                    nettyClient.insertCmd(CmdInterface.GAME_TURN_RIGHT);
-                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_TURN_RIGHT");
-                    return;
-                }
-            }
-            if ((touchEvent.y == (int) bigCircle.getCenterY())){
-                if((touchEvent.x > (int) bigCircle.getCenterX())){
-                    nettyClient.insertCmd(CmdInterface.GAME_RETREAT);
-                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_RETREAT");
-                    return;
-                }else if ((touchEvent.x < (int) bigCircle.getCenterX())){
-                    nettyClient.insertCmd(CmdInterface.GAME_GO_FORWARD);
-                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_GO_FORWARD");
-                    return;
-                }
-            }
-            if (((float)touchEvent.x < bigCircle.getCenterX()))
-            {
-                nettyClient.insertCmd(CmdInterface.GAME_GO_FORWARD);
-                if ( ((float)touchEvent.y < bigCircle.getCenterY())){
-                    nettyClient.insertCmd(CmdInterface.GAME_TURN_RIGHT);
-                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_TURN_RIGHT  CmdInterface.GAME_GO_FORWARD");
-                }else if (touchEvent.y > bigCircle.getCenterY()){
-                    nettyClient.insertCmd(CmdInterface.GAME_TURN_LEFT);
-                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_TURN_LEFT  CmdInterface.GAME_GO_FORWARD");
-                }
-            }else  if (((float)touchEvent.x > bigCircle.getCenterX())){
-                nettyClient.insertCmd(CmdInterface.GAME_RETREAT);
-                if ( ((float)touchEvent.y < bigCircle.getCenterY())){
-                    nettyClient.insertCmd(CmdInterface.GAME_TURN_RIGHT);
-                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_TURN_RIGHT  CmdInterface.GAME_RETREAT");
-                }else if (touchEvent.y > bigCircle.getCenterY()){
-                    nettyClient.insertCmd(CmdInterface.GAME_TURN_LEFT);
-                    LogUtil.d(TAG,  "OnClick  CmdInterface.GAME_TURN_LEFT  CmdInterface.GAME_RETREAT");
-                }
-            }
-        }
-*/
-
-        if (touchEvent != null) {
-            float dx = touchEvent.x - bigCircle.getCenterX();
-            float dy = touchEvent.y - bigCircle.getCenterY();
-
-            strings.append(String.valueOf(dx));
-            strings.append(",");
-            strings.append(String.valueOf(dy));
-            nettyClient.insertCmd(strings.toString());
-            strings.setLength(0);
-        }
-
-
-
-
-
     }
 
     public void reset() {
