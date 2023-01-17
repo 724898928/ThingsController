@@ -116,7 +116,6 @@ public class Rocker extends EntityObjectImp implements EntityObject {
     public boolean OnClick(TouchEvent touchEvent, NettyClient nettyClient, String cmd, OnClickListenerObserver onClickListenerObserver) {
         nettyClient = this.nettyClient;
         //判断是否是左摇杆
-
         if (touchEvent.y > screenHeight/2){
             bigSmallCircleLeft.OnClick(touchEvent, nettyClient, null, nettyClient15 -> {
                 Log.d(TAG, "OnClick: LeftBigSmallCircle");

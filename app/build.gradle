@@ -2,11 +2,12 @@ plugins {
     id 'com.android.application'
 }
 android {
-    compileSdkVersion 31
+    compileSdk 31
+
     defaultConfig {
         applicationId "com.lixin.thingscontroller"
         minSdkVersion 26
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -34,6 +35,8 @@ dependencies {
     implementation 'io.netty:netty-all:4.1.30.Final'
     // For developers using AndroidX in their applications
     implementation 'pub.devrel:easypermissions:3.0.0'
-    // For developers using the Android Support Library
-    implementation 'pub.devrel:easypermissions:2.0.1'
+    // webrtc
+    implementation 'org.webrtc:google-webrtc:1.0.32006'
+    implementation 'org.java-websocket:Java-WebSocket:1.4.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
 }

@@ -135,7 +135,7 @@ public class MultiTouchHandler implements TouchHandler {
         synchronized (this) {
             int action = event.getAction() & MotionEvent.ACTION_MASK;
             int pointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK)
-                    >> MotionEvent.ACTION_POINTER_ID_SHIFT;
+                    >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
             int pointerCount = event.getPointerCount();
             for (int i = 0; i < MAX_TOUCHPOINTS; i++) {
                 if (i >= pointerCount) {
