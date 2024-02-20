@@ -82,9 +82,8 @@ public class BigSmallCircle extends EntityObjectImp implements ObserverListener 
 
     @Override
     public void drawSelf(Canvas canvas) {
-        canvas.drawCircle(bigCircle.getCenterX(), bigCircle.getCenterY(), bigCircle.getCenterR(), paint);
-        canvas.drawCircle(smallCircle.getCenterX(), smallCircle.getCenterY(), smallCircle.getCenterR(), paint);
-
+        canvas.drawCircle(bigCircle.getCenterX(), bigCircle.getCenterY()-50, bigCircle.getCenterR(), paint);
+        canvas.drawCircle(smallCircle.getCenterX(), smallCircle.getCenterY()-50, smallCircle.getCenterR(), paint);
     }
 
     /**

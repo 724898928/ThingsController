@@ -39,4 +39,6 @@ dependencies {
     implementation 'org.webrtc:google-webrtc:1.0.32006'
     implementation 'org.java-websocket:Java-WebSocket:1.4.0'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'org.projectlombok:lombok:1.16.18'
+    implementation 'org.glassfish:javax.annotation:10.0-b28'
 }

@@ -47,7 +47,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
         //this.framebuffer =
         nettyClient = NettyClient.getInstance();
         this.holder = getHolder();
-
+        this.holder.addCallback(this);
         // 设置全屏
         dm = new DisplayMetrics();
         context.getWindowManager().getDefaultDisplay().getRealMetrics(dm);
