@@ -64,8 +64,6 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
     private final static String TAG = MainActivity.class.getSimpleName();
     MyOpenGl myOpenGl;
 
-    private int videoHeight;
-    private int videoWidth;
 
     private EglBase eglBase;
 
@@ -114,9 +112,6 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         remoteSurfaceView = findViewById(R.id.remoterSV);
         localSurfaceView = findViewById(R.id.localSV);
 
-        DisplayMetrics displayMetrics = getDisplayMetrics();
-        videoWidth = displayMetrics.widthPixels;
-        videoHeight = displayMetrics.heightPixels;
 
         // 创建EglBase对象
         eglBase = EglBase.create();
@@ -126,8 +121,6 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         layout.addView(initControlView(),layoutParams);
 
-//        Intent intent = new Intent(this, FloatingButtonService.class);
-//        startService(intent);
         Log.d(TAG, "onCreate: end");
         // Example of a call to a native method
         // TextView tv = (TextView) findViewById(R.id.sample_text);
@@ -351,7 +344,7 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
 
 
     @TargetApi(17)
-    private DisplayMetrics getDisplayMetrics() {
+    public DisplayMetrics getDisplayMetrics() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) getApplication().getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getRealMetrics(displayMetrics);

@@ -24,7 +24,7 @@ public class Rocker extends EntityObjectImp implements EntityObject {
     //当前摇杆的弧度
     private double currentRad = Double.NaN;
     //定义摇杆的颜色
-    private int rockerColor = Color.GREEN;
+    private int rockerColor = Color.GRAY;
     private int screenWidth;
     private int screenHeight;
     //摇杆右边界宽度相对于屏幕的百分比

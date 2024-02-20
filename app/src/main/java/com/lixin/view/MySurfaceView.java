@@ -6,11 +6,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.lixin.activities.MainActivity;
 import com.lixin.util.LogUtil;
 import com.lixin.entity.Rocker;
 import com.lixin.gameInterface.ObserverListener;
@@ -26,6 +29,7 @@ import java.util.List;
 
 public class MySurfaceView extends SurfaceView implements Runnable, ObserverListener, SurfaceHolder.Callback {
 
+    private final String TAG = MySurfaceView.class.getSimpleName();
     private int SCREEN_W;
     private int SCREEN_H;
     private Thread mThread;
@@ -38,40 +42,48 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
 
     private MultiTouchHandler multiTouchHandler;
     private List<TouchEvent> touchEvents;
-    private String className = "com.li MySurfaceView";
     private NettyClient nettyClient;
     private Point outSize;
+    private int notchHeight; // 刘海高度
     public MySurfaceView(Activity context) {
         super(context);
        // init();
-        LogUtil.d(className, "MySurfaceView begin");
+        notchHeight = getNotchHeight(context);
+        LogUtil.d(TAG, "MySurfaceView begin");
         //this.game = game;
         //this.framebuffer =
         nettyClient = NettyClient.getInstance();
         this.holder = getHolder();
         this.holder.addCallback(this);
         // 设置全屏
-        dm = new DisplayMetrics();
+        DisplayMetrics displayMetrics = ((MainActivity)context).getDisplayMetrics();
+        dm = displayMetrics;
         context.getWindowManager().getDefaultDisplay().getRealMetrics(dm);
 
         surfaceCreated(holder);
         setFocusable(true);
+
         TouchHandler touchHandler = new MultiTouchHandler(this, this, 1, 1);
         touchEvents = touchHandler.getTouchEvents();
-        LogUtil.d(className, "MySurfaceView end");
+        LogUtil.d(TAG, "MySurfaceView end");
+    }
+
+    private int getNotchHeight(Activity context){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+            int notchHeight = context.getWindow().getDecorView().getHeight();
+            LogUtil.d(TAG, "getNotchHeight: notchHeight = "+notchHeight);
+          return notchHeight;
+        }
+        return 0;
     }
 
     public SurfaceHolder getSurfaceHolder(){
         return this.holder;
     }
 
-//    private void init() {
-//        paint = new Paint();
-//        paint.setAlpha(128); // 设置透明度，取值范围为0-255，0为完全透明，255为完全不透明
-//    }
     @Override
     public void run() {
-        LogUtil.d(className, "run begin");
+        LogUtil.d(TAG, "run begin");
         long startTime = System.currentTimeMillis();
         while (running) {
             try {
@@ -96,22 +108,22 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
                     e.printStackTrace();
                 }
             }
-            LogUtil.d(className, "running");
+            LogUtil.d(TAG, "running");
         }
-        LogUtil.d(className, "end");
+        LogUtil.d(TAG, "end");
     }
 
     public void resume() {
-        LogUtil.d(className, "resume begin");
+        LogUtil.d(TAG, "resume begin");
         renderThread = new Thread(this);
         renderThread.start();
-        LogUtil.d(className, "resume end");
+        LogUtil.d(TAG, "resume end");
         running = true;
 
     }
 
     public void pause() {
-        LogUtil.d(className, "pause begin");
+        LogUtil.d(TAG, "pause begin");
         running = false;
         while (true) {
             try {
@@ -121,14 +133,14 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
                 e.printStackTrace();
             }
         }
-        LogUtil.d(className, "pause end");
+        LogUtil.d(TAG, "pause end");
 
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         SCREEN_W = dm.widthPixels;
-        SCREEN_H = dm.heightPixels;
+        SCREEN_H = dm.heightPixels-150;
         running = true;
         rocker = new Rocker(SCREEN_W, SCREEN_H, nettyClient);
         mThread = new Thread(this);
@@ -137,19 +149,19 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        LogUtil.d(className, "surfaceChanged ");
+        LogUtil.d(TAG, "surfaceChanged ");
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        LogUtil.d(className, "surfaceDestroyed ");
+        LogUtil.d(TAG, "surfaceDestroyed ");
     }
 
     @Override
     public void observerUpData(TouchEvent touchEvent) {
-        LogUtil.d(className, "observerUpData begin");
+        LogUtil.d(TAG, "observerUpData begin");
         rocker.OnClick(touchEvent,nettyClient,null,null);
-        LogUtil.d(className, "observerUpData end");
+        LogUtil.d(TAG, "observerUpData end");
 
     }
 

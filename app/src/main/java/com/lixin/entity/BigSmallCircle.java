@@ -17,7 +17,7 @@ import com.lixin.gameInterfaceImp.TouchEvent;
  */
 
 public class BigSmallCircle extends EntityObjectImp implements ObserverListener {
-    private final String TAG = "com.li BigSmallCircle ";
+    private final String TAG = BigSmallCircle.class.getSimpleName();
     private Circle bigCircle;
     private Circle smallCircle;
     //按钮布局大圆半径
