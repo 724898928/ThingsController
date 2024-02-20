@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/surface_container"
+    android:id="@+id/call_fragment_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MergeRootFrame"
+    >
     <org.webrtc.SurfaceViewRenderer
         android:id="@+id/remoterSV"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center" />
-
     <org.webrtc.SurfaceViewRenderer
         android:id="@+id/localSV"
-        android:layout_width="150dp"
-        android:layout_height="200dp"
-        android:layout_gravity="top|left" />
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_gravity="top|start" />
+<!--    <FrameLayout-->
+<!--        android:id="@+id/call_fragment_container"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+<!--    </FrameLayout>-->
 </FrameLayout>

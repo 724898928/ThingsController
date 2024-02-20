@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
 import android.util.DisplayMetrics;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -42,6 +43,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
     private Point outSize;
     public MySurfaceView(Activity context) {
         super(context);
+       // init();
         LogUtil.d(className, "MySurfaceView begin");
         //this.game = game;
         //this.framebuffer =
@@ -59,6 +61,14 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
         LogUtil.d(className, "MySurfaceView end");
     }
 
+    public SurfaceHolder getSurfaceHolder(){
+        return this.holder;
+    }
+
+//    private void init() {
+//        paint = new Paint();
+//        paint.setAlpha(128); // 设置透明度，取值范围为0-255，0为完全透明，255为完全不透明
+//    }
     @Override
     public void run() {
         LogUtil.d(className, "run begin");
@@ -67,7 +77,7 @@ public class MySurfaceView extends SurfaceView implements Runnable, ObserverList
             try {
                 canvas = holder.lockCanvas();
                 if (canvas != null) {
-                    canvas.drawColor(Color.WHITE);
+                    canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
                     rocker.drawSelf(canvas);
                 }
                 //将矩形延伸到整个SuffaceView

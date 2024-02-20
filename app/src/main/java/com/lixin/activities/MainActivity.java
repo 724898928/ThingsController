@@ -12,6 +12,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -62,7 +63,6 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
 
     private final static String TAG = MainActivity.class.getSimpleName();
     MyOpenGl myOpenGl;
-    MySurfaceView mySurfaceView;
 
     private int videoHeight;
     private int videoWidth;
@@ -102,7 +102,7 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         getWindow().getDecorView().setSystemUiVisibility(getSystemUiVisibility());
         setContentView(R.layout.main_layout);
-        FrameLayout layout = findViewById(R.id.surface_container);
+        FrameLayout layout = findViewById(R.id.call_fragment_container);
         String[] perms = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, Manifest.permission.INTERNET};
         if (!EasyPermissions.hasPermissions(this, perms)){
             EasyPermissions.requestPermissions(this,"Need permissions for net and camera & microphone", 0, perms);
@@ -114,10 +114,6 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         remoteSurfaceView = findViewById(R.id.remoterSV);
         localSurfaceView = findViewById(R.id.localSV);
 
-        mySurfaceView = new MySurfaceView(this);
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-        layout.addView(mySurfaceView,layoutParams);
-
         DisplayMetrics displayMetrics = getDisplayMetrics();
         videoWidth = displayMetrics.widthPixels;
         videoHeight = displayMetrics.heightPixels;
@@ -127,10 +123,26 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         initView();
         startCall();
 
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        layout.addView(initControlView(),layoutParams);
+
+//        Intent intent = new Intent(this, FloatingButtonService.class);
+//        startService(intent);
         Log.d(TAG, "onCreate: end");
         // Example of a call to a native method
         // TextView tv = (TextView) findViewById(R.id.sample_text);
         //tv.setText(stringFromJNI());
+    }
+
+    private MySurfaceView initControlView(){
+        MySurfaceView mySurfaceView = new MySurfaceView(this);
+        mySurfaceView.setAlpha(0);
+        //
+        mySurfaceView.setZOrderOnTop(true);
+        mySurfaceView.setZOrderMediaOverlay(true);
+        // 将布局中不展示内容的地方设置成透明.
+        mySurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+        return  mySurfaceView;
     }
 
     private void initView() {
@@ -141,11 +153,11 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
     private void initSurfaceView(SurfaceViewRenderer surfaceView) {
         surfaceView.init(eglBase.getEglBaseContext(), null);
         surfaceView.setMirror(true);
-        surfaceView.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL);
+        surfaceView.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
         surfaceView.setKeepScreenOn(true);
         surfaceView.setZOrderMediaOverlay(true);
         surfaceView.setEnableHardwareScaler(false);
-
+        surfaceView.setFpsReduction(30);
     }
 
     private void startCall() {

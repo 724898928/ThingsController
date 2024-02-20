@@ -36,7 +36,8 @@ dependencies {
     // For developers using AndroidX in their applications
     implementation 'pub.devrel:easypermissions:3.0.0'
     // webrtc
-    implementation 'org.webrtc:google-webrtc:1.0.32006'
+    implementation 'org.webrtc:google-webrtc:1.0.+'
+    //implementation 'io.getstream:stream-webrtc-android:1.1.1'
     implementation 'org.java-websocket:Java-WebSocket:1.4.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'org.projectlombok:lombok:1.16.18'
