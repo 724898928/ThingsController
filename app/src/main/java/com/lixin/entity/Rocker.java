@@ -72,8 +72,9 @@ public class Rocker extends EntityObjectImp implements EntityObject {
         btnCircle3 = new Circle(paint);
 
         bigSmallCircleRight = new BigSmallCircle(screenWidth, screenHeight, paint, degreesRight, bigCircleR,
-                BigSmallCircle.getRightBtnsX(screenWidth, largeR2, scale, degreesLeft),
-                BigSmallCircle.getRightBtnsY(scale, largeR2, degreesLeft));
+                BigSmallCircle.getRightBtnsX(screenWidth, largeR2, scale, degreesRight),
+                BigSmallCircle.getRightBtnsY(scale, largeR2, degreesRight));
+
         bigSmallCircleLeft = new BigSmallCircle(screenWidth, screenHeight, paint, degreesLeft, bigCircleR,
                 BigSmallCircle.getLeftBtnsX(screenWidth, largeR2, scale, degreesLeft),
                 BigSmallCircle.getLeftBtnsY(screenHeight, scale, largeR2, degreesLeft));

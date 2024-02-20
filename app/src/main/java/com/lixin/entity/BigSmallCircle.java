@@ -60,12 +60,13 @@ public class BigSmallCircle extends EntityObjectImp implements ObserverListener 
 
     }
 
+    // 角度转弧度
     public static double getBtnRad(int scale, double degrees) {
         return Math.toRadians(scale * degrees);
     }
 
     public static float getRightBtnsX(int screenWidth, float largeR, int scale, double degrees) {
-        return (float) (screenWidth - largeR * Math.sin(getBtnRad(scale, degrees)));
+        return (float) (screenWidth - largeR * Math.sin(getBtnRad(scale, degrees))-100);
     }
 
     public static float getRightBtnsY(int scale, float largeR, double degrees) {
